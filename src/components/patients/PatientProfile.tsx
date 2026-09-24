@@ -15,6 +15,8 @@ import {
   X,
   CreditCard,
   Plus,
+  Pill,
+  Printer,
 } from 'lucide-react';
 
 interface PatientProfileProps {
@@ -23,6 +25,14 @@ interface PatientProfileProps {
   onBookAppointment?: (patient: Patient) => void;
   onCreateTreatmentPlan?: (patient: Patient) => void;
   onCreateInvoice?: (patient: Patient) => void;
+}
+
+interface PrescriptionItem {
+  id: string;
+  drugName: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
 }
 
 export const PatientProfile: React.FC<PatientProfileProps> = ({
@@ -41,9 +51,40 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
     updatePatientTooth,
   } = useData();
 
-  const [activeTab, setActiveTab] = useState<'info' | 'odontogram' | 'appointments' | 'treatments' | 'ledger'>(
+  const [activeTab, setActiveTab] = useState<'info' | 'odontogram' | 'appointments' | 'treatments' | 'ledger' | 'prescription'>(
     'info'
   );
+
+  // Prescription Generator State
+  const [prescriptions, setPrescriptions] = useState<PrescriptionItem[]>([
+    { id: '1', drugName: 'Amoxicillin 500mg', dosage: '1 Capsule', frequency: 'TID (3 times daily after food)', duration: '5 Days' },
+    { id: '2', drugName: 'Paracetamol 650mg', dosage: '1 Tablet', frequency: 'BD (Twice daily when needed)', duration: '3 Days' },
+    { id: '3', drugName: 'Chlorhexidine 0.2% Mouthwash', dosage: '10ml', frequency: 'BD (Rinse for 1 minute)', duration: '7 Days' },
+  ]);
+
+  const [newDrug, setNewDrug] = useState('Augmentin 625mg');
+  const [newDosage, setNewDosage] = useState('1 Tablet');
+  const [newFreq, setNewFreq] = useState('BD (Twice daily)');
+  const [newDur, setNewDur] = useState('5 Days');
+
+  const addPrescriptionItem = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDrug) return;
+    setPrescriptions((prev) => [
+      ...prev,
+      {
+        id: String(Date.now()),
+        drugName: newDrug,
+        dosage: newDosage,
+        frequency: newFreq,
+        duration: newDur,
+      },
+    ]);
+  };
+
+  const removePrescriptionItem = (id: string) => {
+    setPrescriptions((prev) => prev.filter((p) => p.id !== id));
+  };
 
   const patientAppointments = appointments.filter((a) => a.patient_id === patient.id);
   const patientTreatmentPlans = treatmentPlans.filter((tp) => tp.patient_id === patient.id);
@@ -51,12 +92,12 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
   const totalBalance = ledgerEntries.length > 0 ? ledgerEntries[ledgerEntries.length - 1].balance : 0;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl shadow-2xl overflow-hidden my-8 max-h-[90vh] flex flex-col">
         {/* Profile Header */}
         <div className="bg-slate-950 p-6 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
           <div className="flex items-center space-x-4">
-            <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-sky-500/20">
+            <div className="w-14 h-14 rounded-2xl bg-sky-600 flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-sky-600/30">
               {patient.name.charAt(0)}
             </div>
             <div>
@@ -83,7 +124,6 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
-            {/* Action buttons */}
             {onBookAppointment && (
               <button
                 onClick={() => onBookAppointment(patient)}
@@ -121,10 +161,11 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-slate-800 bg-slate-900/90 px-6 shrink-0 overflow-x-auto">
+        <div className="flex border-b border-slate-800 bg-slate-900 px-6 shrink-0 overflow-x-auto">
           {[
             { id: 'info', label: 'Personal Information', icon: <User className="w-3.5 h-3.5" /> },
             { id: 'odontogram', label: 'Dental Charting (Odontogram)', icon: <Activity className="w-3.5 h-3.5" /> },
+            { id: 'prescription', label: `Rx Prescriptions (${prescriptions.length})`, icon: <Pill className="w-3.5 h-3.5" /> },
             { id: 'appointments', label: `Appointments (${patientAppointments.length})`, icon: <Calendar className="w-3.5 h-3.5" /> },
             { id: 'treatments', label: `Treatment Plans (${patientTreatmentPlans.length})`, icon: <Activity className="w-3.5 h-3.5" /> },
             { id: 'ledger', label: `Payment Ledger (₹${totalBalance.toLocaleString()})`, icon: <CreditCard className="w-3.5 h-3.5" /> },
@@ -149,7 +190,7 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
           {activeTab === 'info' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Basic & Contact Info Card */}
-              <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-5 space-y-4">
+              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
                 <h4 className="font-bold text-white text-sm border-b border-slate-800 pb-2">
                   Personal Details & Contact
                 </h4>
@@ -159,7 +200,7 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
                     <span className="font-semibold text-slate-200">{patient.name}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block">Patient ID</span>
+                    <span className="text-slate-500 block">Patient Code</span>
                     <span className="font-semibold text-sky-400">{patient.patient_code}</span>
                   </div>
                   <div>
@@ -186,9 +227,9 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
               </div>
 
               {/* Medical Information Card */}
-              <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-5 space-y-4">
+              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
                 <h4 className="font-bold text-white text-sm border-b border-slate-800 pb-2">
-                  Medical Record & Alerts
+                  Medical Alerts & Health Record
                 </h4>
 
                 <div className="space-y-3">
@@ -197,7 +238,7 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
                       <Heart className="w-4 h-4 text-red-400" />
                       <span className="text-slate-400">Blood Group</span>
                     </div>
-                    <span className="font-bold text-white px-2 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30">
+                    <span className="font-bold text-white px-2.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/30">
                       {patient.blood_group}
                     </span>
                   </div>
@@ -236,6 +277,99 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
             />
           )}
 
+          {/* Rx Prescription Generator Tab */}
+          {activeTab === 'prescription' && (
+            <div className="space-y-6">
+              <div className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 className="font-bold text-white text-sm flex items-center space-x-2">
+                    <Pill className="w-4 h-4 text-sky-400" />
+                    <span>NM Clinic Clinical Prescription Writer (Rx)</span>
+                  </h4>
+                  <button
+                    onClick={() => window.print()}
+                    className="px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 text-xs font-semibold flex items-center space-x-1"
+                  >
+                    <Printer className="w-3.5 h-3.5" />
+                    <span>Print Rx Slip</span>
+                  </button>
+                </div>
+
+                <form onSubmit={addPrescriptionItem} className="grid grid-cols-1 sm:grid-cols-4 gap-2 bg-slate-900 p-3 rounded-xl border border-slate-800">
+                  <input
+                    type="text"
+                    value={newDrug}
+                    onChange={(e) => setNewDrug(e.target.value)}
+                    placeholder="Medication (e.g. Amoxicillin)"
+                    className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white"
+                    required
+                  />
+                  <input
+                    type="text"
+                    value={newDosage}
+                    onChange={(e) => setNewDosage(e.target.value)}
+                    placeholder="Dosage (e.g. 1 Capsule)"
+                    className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white"
+                  />
+                  <input
+                    type="text"
+                    value={newFreq}
+                    onChange={(e) => setNewFreq(e.target.value)}
+                    placeholder="Frequency (e.g. TID after food)"
+                    className="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white"
+                  />
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      value={newDur}
+                      onChange={(e) => setNewDur(e.target.value)}
+                      placeholder="Duration (5 Days)"
+                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white"
+                    />
+                    <button
+                      type="submit"
+                      className="clinic-btn-primary px-3 py-1.5 text-xs shrink-0 font-bold"
+                    >
+                      + Add
+                    </button>
+                  </div>
+                </form>
+
+                <div className="bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+                  <table className="w-full text-left text-xs text-slate-300">
+                    <thead className="bg-slate-950 text-slate-400 font-semibold border-b border-slate-800">
+                      <tr>
+                        <th className="px-4 py-3">Medication / Drug Name</th>
+                        <th className="px-4 py-3">Dosage</th>
+                        <th className="px-4 py-3">Frequency & Instructions</th>
+                        <th className="px-4 py-3">Duration</th>
+                        <th className="px-4 py-3 text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800">
+                      {prescriptions.map((p) => (
+                        <tr key={p.id} className="hover:bg-slate-950/40">
+                          <td className="px-4 py-3 font-bold text-white">{p.drugName}</td>
+                          <td className="px-4 py-3 text-sky-400 font-medium">{p.dosage}</td>
+                          <td className="px-4 py-3 text-slate-300">{p.frequency}</td>
+                          <td className="px-4 py-3 text-emerald-400 font-medium">{p.duration}</td>
+                          <td className="px-4 py-3 text-right">
+                            <button
+                              onClick={() => removePrescriptionItem(p.id)}
+                              className="text-red-400 hover:text-red-300 text-xs font-semibold"
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'appointments' && (
             <div className="space-y-3">
               {patientAppointments.length === 0 ? (
@@ -246,7 +380,7 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
                   return (
                     <div
                       key={apt.id}
-                      className="p-4 bg-slate-950/60 border border-slate-800 rounded-xl flex items-center justify-between"
+                      className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between"
                     >
                       <div className="space-y-1">
                         <div className="flex items-center space-x-2">
@@ -281,7 +415,7 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
                 patientTreatmentPlans.map((tp) => {
                   const visits = treatmentVisits.filter((v) => v.treatment_plan_id === tp.id);
                   return (
-                    <div key={tp.id} className="p-5 bg-slate-950/60 border border-slate-800 rounded-2xl space-y-3">
+                    <div key={tp.id} className="p-5 bg-slate-950 border border-slate-800 rounded-2xl space-y-3">
                       <div className="flex items-start justify-between">
                         <div>
                           <h4 className="font-bold text-white text-sm">{tp.treatment_name}</h4>
@@ -309,15 +443,15 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
 
                       {/* Visit Log Timeline */}
                       <div className="space-y-2 pt-2">
-                        <div className="font-bold text-slate-300 text-xs flex items-center justify-between">
-                          <span>Treatment Visit Logs ({visits.length})</span>
+                        <div className="font-bold text-slate-300 text-xs">
+                          Treatment Visit Logs ({visits.length})
                         </div>
                         {visits.length === 0 ? (
                           <p className="text-slate-500 italic">No visit logs recorded yet.</p>
                         ) : (
                           <div className="space-y-2">
                             {visits.map((vis) => (
-                              <div key={vis.id} className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
+                              <div key={vis.id} className="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs">
                                 <div className="flex justify-between font-semibold text-white">
                                   <span>{vis.procedure_done}</span>
                                   <span className="text-sky-400">₹{vis.amount_charged}</span>
@@ -352,7 +486,7 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
               {ledgerEntries.length === 0 ? (
                 <div className="text-center py-8 text-slate-500">No ledger transaction entries found.</div>
               ) : (
-                <div className="bg-slate-950/60 border border-slate-800 rounded-xl overflow-hidden">
+                <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
                   <table className="w-full text-left text-xs text-slate-300">
                     <thead className="bg-slate-900 text-slate-400 font-semibold border-b border-slate-800">
                       <tr>
