@@ -2,21 +2,57 @@
 
 @layer base {
   :root {
-    --color-primary: #0284c7;
-    --color-primary-hover: #0369a1;
-    --color-teal: #0d9488;
-    --color-surface: #f8fafc;
+    --color-nm-primary: #0284c7;
+    --color-nm-teal: #0d9488;
+    --color-nm-cyan: #06b6d4;
+    --color-nm-emerald: #10b981;
+    --color-nm-dark: #0a0f1d;
   }
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: #0f172a;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #070c18;
   color: #f1f5f9;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+}
+
+.glass-card {
+  background: rgba(10, 15, 29, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(6, 182, 212, 0.35);
+  box-shadow: 0 10px 30px -5px rgba(14, 165, 233, 0.2);
+  transform: translateY(-2px);
+}
+
+/* NM Clinic Gradients */
+.nm-gradient-text {
+  background: linear-gradient(135deg, #38bdf8 0%, #22d3ee 50%, #2dd4bf 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nm-gradient-bg {
+  background: linear-gradient(135deg, #0284c7 0%, #0891b2 50%, #0d9488 100%);
+}
+
+.nm-badge-glow {
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
 }
 
 /* Custom Scrollbars */
@@ -26,7 +62,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: #0f172a;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -35,10 +71,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #0ea5e9;
 }
 
-/* Print Styles for Invoices */
+/* Print Styles for NM Clinic Invoices */
 @media print {
   body {
     background-color: white !important;
@@ -47,56 +83,12 @@ body {
   .no-print {
     display: none !important;
   }
-  .print-only {
-    display: block !important;
-  }
   .printable-area {
     width: 100% !important;
     margin: 0 !important;
-    padding: 20px !important;
+    padding: 24px !important;
     box-shadow: none !important;
     background: white !important;
     color: black !important;
-  }
-}
-
-.glass-panel {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-card {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.2s ease-in-out;
-}
-
-.glass-card:hover {
-  border-color: rgba(56, 189, 248, 0.3);
-  box-shadow: 0 8px 25px -5px rgba(14, 165, 233, 0.15);
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, #38bdf8 0%, #2dd4bf 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gradient-bg {
-  background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
-}
-
-.dental-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
   }
 }
