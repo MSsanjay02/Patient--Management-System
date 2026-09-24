@@ -2,14 +2,13 @@
 
 @layer base {
   :root {
-    --clinic-navy: #0b132b;
-    --clinic-slate: #1c2541;
+    --clinic-bg: #f8fafc;
+    --clinic-card-bg: #ffffff;
+    --clinic-border: #e2e8f0;
     --clinic-primary: #0284c7;
     --clinic-primary-dark: #0369a1;
-    --clinic-accent: #06b6d4;
-    --clinic-success: #059669;
-    --clinic-warning: #d97706;
-    --clinic-danger: #dc2626;
+    --clinic-text-main: #0f172a;
+    --clinic-text-muted: #64748b;
   }
 }
 
@@ -17,33 +16,33 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #090f1d;
-  color: #f1f5f9;
+  background-color: #f8fafc;
+  color: #0f172a;
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Human-designed Human-Centric Medical Components */
+/* Light Medical Theme Utility Components */
 .clinic-card {
-  background: #0f172a;
-  border: 1px solid #1e293b;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 1rem;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .clinic-card:hover {
   border-color: #0284c7;
-  box-shadow: 0 8px 25px -4px rgba(2, 132, 199, 0.15);
+  box-shadow: 0 8px 25px rgba(2, 132, 199, 0.12);
 }
 
 .clinic-input {
-  background-color: #090f1d;
-  border: 1px solid #334155;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: 0.75rem;
   padding: 0.6rem 0.85rem;
-  color: #ffffff;
+  color: #0f172a;
   font-size: 0.875rem;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -51,7 +50,7 @@ body {
 .clinic-input:focus {
   outline: none;
   border-color: #0284c7;
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
 .clinic-btn-primary {
@@ -61,27 +60,27 @@ body {
   border-radius: 0.75rem;
   padding: 0.6rem 1.25rem;
   font-size: 0.875rem;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
   transition: all 0.15s ease;
 }
 
 .clinic-btn-primary:hover {
   background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
-  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.3);
 }
 
-/* Custom Scrollbars */
+/* Custom Scrollbars for Light Theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090f1d;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 

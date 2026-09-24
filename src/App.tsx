@@ -29,8 +29,8 @@ const MainApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Top Navigation */}
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
+      {/* Top Navigation Bar */}
       <Navbar onLogout={() => setIsAuthenticated(false)} activeTab={activeTab} />
 
       {/* Body Layout */}
