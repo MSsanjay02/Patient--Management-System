@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Patient } from '../../types';
+import type { Patient } from '../../types';
 import { DentalOdontogram } from './DentalOdontogram';
 import {
   User,
@@ -37,8 +37,6 @@ export const PatientProfile: React.FC<PatientProfileProps> = ({
     doctors,
     treatmentPlans,
     treatmentVisits,
-    invoices,
-    payments,
     getPatientLedger,
     updatePatientTooth,
   } = useData();

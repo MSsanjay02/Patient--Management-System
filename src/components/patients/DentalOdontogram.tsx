@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ToothCondition } from '../../types';
+import type { ToothCondition } from '../../types';
 import { Activity, CheckCircle, Info } from 'lucide-react';
 
 interface DentalOdontogramProps {

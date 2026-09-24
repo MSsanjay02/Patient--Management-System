@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Patient } from '../../types';
+import type { Patient } from '../../types';
 import { UserPlus, X, HeartPulse, MapPin, UserCheck } from 'lucide-react';
 
 interface AddPatientModalProps {

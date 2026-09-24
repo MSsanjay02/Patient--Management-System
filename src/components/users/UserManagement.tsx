@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { User, Role } from '../../types';
+import type { User, Role } from '../../types';
 import { UserPlus, UserCheck, Shield, CheckCircle, Ban, Edit, Search } from 'lucide-react';
 
 export const UserManagement: React.FC = () => {

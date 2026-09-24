@@ -1,4 +1,4 @@
-import { User, Doctor, Patient, Appointment, TreatmentPlan, TreatmentVisit, Invoice, Payment } from '../types';
+import type { User, Doctor, Patient, Appointment, TreatmentPlan, TreatmentVisit, Invoice, Payment } from '../types';
 
 export const initialUsers: User[] = [
   {

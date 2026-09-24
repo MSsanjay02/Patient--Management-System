@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Doctor } from '../../types';
+import type { Doctor } from '../../types';
 import { UserCheck, Plus, Search, Edit, Ban, Phone, Mail, Award, CheckCircle } from 'lucide-react';
 
 export const DoctorManagement: React.FC = () => {

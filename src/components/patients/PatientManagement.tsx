@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useData } from '../../context/DataContext';
-import { Patient } from '../../types';
+import type { Patient } from '../../types';
 import { AddPatientModal } from './AddPatientModal';
 import { PatientProfile } from './PatientProfile';
-import { Users, UserPlus, Search, Phone, MapPin, Activity, Eye, Filter } from 'lucide-react';
+import { Users, UserPlus, Search, Phone, MapPin, Eye, Filter } from 'lucide-react';
 
 interface PatientManagementProps {
   onBookAppointment?: (patient: Patient) => void;

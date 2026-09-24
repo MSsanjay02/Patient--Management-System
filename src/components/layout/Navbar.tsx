@@ -1,6 +1,6 @@
 import React from 'react';
 import { useData } from '../../context/DataContext';
-import { Role } from '../../types';
+import type { Role } from '../../types';
 import { Stethoscope, UserCheck, LogOut, Shield, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
